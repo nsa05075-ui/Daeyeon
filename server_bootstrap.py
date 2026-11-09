@@ -15,4 +15,5 @@ for name,data in zip(FILES,parts):
 if __name__=='__main__':
     import uvicorn
     os.chdir(BASE)
+    import staff_patch  # register authenticated backup recovery API
     uvicorn.run('app:app',host='0.0.0.0',port=int(os.environ.get('PORT','10000')),workers=1)
