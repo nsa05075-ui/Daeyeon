@@ -41,7 +41,7 @@ def reconcile_from_pc(payload:ReconcileInput, request:Request):
         placeholders=','.join('?'*len(known))
         db.execute('DELETE FROM winners WHERE number NOT IN ('+placeholders+')',tuple(known))
         for i,nums in enumerate(payload.records,1):
-            tier=payload.labels[i-1] if i<len(payload.labels) else '기본 추첨'
+            tier=payload.labels[i-1] if i<=len(payload.labels) else '기본 추첨'
             db.execute('INSERT INTO rounds(round_no,tier,created_at) VALUES(?,?,?) ON CONFLICT(round_no) DO UPDATE SET tier=excluded.tier',(i,tier,time.time()))
             for n in nums:
                 old=db.execute('SELECT status,revision FROM winners WHERE number=?',(n,)).fetchone()
